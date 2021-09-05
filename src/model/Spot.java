@@ -41,4 +41,10 @@ public class Spot {
     {
         this.y = y;
     }
+    
+    public boolean isEmpty() {
+    	if(piece == null)
+    		return true;
+    	return false;
+    }
 }
