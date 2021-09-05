@@ -3,20 +3,22 @@ package model;
 import java.util.List;
 
 public class Game {
-    private Player[] players;
+    private Player P1;
+    private Player P2;
     private Board board;
     private Player currentTurn;
     private byte status;
     private List<Move> movesPlayed;
+    private static Game game = null;
     
     final public static byte ACTIVE = 0;
     final public static byte WHITE_WINS = 1;
     final public static byte BLACK_WINS = 2;
   
-    private void initialize(Player p1, Player p2)
+    private Game(Player p1, Player p2)
     {
-        players[0] = p1;
-        players[1] = p2;
+        P1 = p1;
+        P2 = p2;
   
         board.resetBoard();
   
@@ -28,6 +30,14 @@ public class Game {
         }
   
         movesPlayed.clear();
+    }
+    
+    public static Game  getIstance() {
+    	if(game == null) {
+    		game = new Game(new HumanPlayer(true), new HumanPlayer(false));
+    		return game;
+    	}
+    	return game;   		
     }
   
     public boolean isEnd()
@@ -49,7 +59,7 @@ public class Game {
                                 int startY, int endX, int endY) throws Exception
     {
         Spot startBox = board.getBox(startX, startY);
-        Spot endBox = board.getBox(startY, endY);
+        Spot endBox = board.getBox(endX, endY);
         Move move = new Move(player, startBox, endBox);
         return this.makeMove(move, player);
     }
@@ -76,14 +86,18 @@ public class Game {
             return false;
         }
   
-        // kill?
-        Piece destPiece = move.getStart().getPiece();
+        // kill
+        Piece destPiece = move.getEnd().getPiece();
         if (destPiece != null) {
             destPiece.setKilled(true);
             move.setPieceKilled(destPiece);
+            if(sourcePiece.isWhite())
+            	if(--P2.remainingPieces == 0)
+            		status = WHITE_WINS;
+            else   	
+            	if(--P1.remainingPieces == 0)
+            		status = BLACK_WINS;
         }
-  
-        
   
         // store the move
         movesPlayed.add(move);
@@ -91,22 +105,13 @@ public class Game {
         // move piece from the start box to end box
         move.getEnd().setPiece(move.getStart().getPiece());
         move.getStart().setPiece(null);
-  
-        if (destPiece != null) {
-            if (player.isWhiteSide()) {
-                this.setStatus(WHITE_WINS);
-            }
-            else {
-                this.setStatus(BLACK_WINS);
-            }
-        }
-  
+
         // set the current turn to the other player
-        if (this.currentTurn == players[0]) {
-            this.currentTurn = players[1];
+        if (this.currentTurn == P1) {
+            this.currentTurn = P1;
         }
         else {
-            this.currentTurn = players[0];
+            this.currentTurn = P2;
         }
   
         return true;

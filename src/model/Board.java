@@ -20,7 +20,23 @@ public class Board {
   
     public void resetBoard()
     {
-        //DA FARE
+        for(int i = 0; i < 8; i++) {
+        	for(int j = 0; j < 8; j++) {
+        		
+        		//black pieces
+        		if(i == 0 || i == 2)
+        			boxes[i][j] = new Spot(i, j, new Piece(false));
+        		
+        		//white pieces
+        		else if(i == 7 || i == 5)
+        			boxes[i][j] = new Spot(i, j, new Piece(true));
+        		
+        		//blank
+        		else
+        			boxes[i][j] = new Spot(i, j, null);
+        		
+        	}
+        }
         
     }
 }

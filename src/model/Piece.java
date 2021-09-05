@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Piece {
+public class Piece {
 	  
     private boolean killed = false;
     private boolean white = false;
@@ -30,6 +30,15 @@ public abstract class Piece {
         this.killed = killed;
     }
   
-    public abstract boolean canMove(Board board, 
-                                 Spot start, Spot end);
+    public boolean canMove(Board board, Spot start, Spot end) {
+    	
+    	if (end.getPiece().isWhite() == this.isWhite()) {
+            return false;
+        }
+  
+        int x = Math.abs(start.getX() - end.getX());
+        int y = Math.abs(start.getY() - end.getY());
+        return x * y == 0;
+    	
+    }
 }
