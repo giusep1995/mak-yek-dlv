@@ -3,6 +3,11 @@ package model;
 public abstract class Player {
     public boolean whiteSide;
     public boolean humanPlayer;
+    public byte remainingPieces;
+    
+    public Player() {
+    	remainingPieces = 16;
+    }
   
     public boolean isWhiteSide()
     {
@@ -12,6 +17,8 @@ public abstract class Player {
     {
         return this.humanPlayer;
     }
+    
+    
 }
   
 
