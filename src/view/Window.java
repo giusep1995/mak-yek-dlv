@@ -39,8 +39,8 @@ public class Window extends JFrame {
 	
 	public Window(Player player1, Player player2) {
 		this();
-		player1 = Game.getIstance().getP1();
-		player2 = Game.getIstance().getP2();
+		player1 = Game.getInstance().getP1();
+		player2 = Game.getInstance().getP2();
 	}
 	
 	public Window(int width, int height, String title) {
@@ -71,7 +71,7 @@ public class Window extends JFrame {
 	 * Resets the game of checkers in the window.
 	 */
 	public void restart() {
-		Game.getIstance().reset();
+		Game.getInstance().reset();
 		this.board.update();
 	}
 	

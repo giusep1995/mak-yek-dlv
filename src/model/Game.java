@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -21,7 +23,7 @@ public class Game {
         P2 = p2;      
     }
     
-    public static Game  getIstance() {
+    public static Game  getInstance() {
     	if(instance == null) {
     		instance = new Game(new HumanPlayer(true), new HumanPlayer(false));
     	}
@@ -38,6 +40,7 @@ public class Game {
     {
         return this.getStatus() != ACTIVE;
     }
+    
   
     public byte getStatus()
     {
@@ -55,7 +58,14 @@ public class Game {
         Spot startBox = board.getBox(startX, startY);
         Spot endBox = board.getBox(endX, endY);
         Move move = new Move(player, startBox, endBox);
-        return this.makeMove(move, player);
+        
+        if(checkValidMove(move, player)){
+        	makeMove(move, player);
+        	return true;
+        }
+        return false;
+        	
+        	
     }
     
     public boolean checkValidMove(Move move, Player player) {
@@ -80,32 +90,55 @@ public class Game {
             return false;
         }
         
-        //DOBBIAMO CONTROLLARE ANCHE SE LA DIREZIONE VERSO CUI SI MUOVE E OCCUPATA
-        Piece destPiece = move.getEnd().getPiece();
-        if(destPiece != null)
-        	return false;
+        //Occupied direction ?
+        ArrayList<Point> points = move.getDirectionSpots();
+        for(Point p : points) {
+        	try {
+				if(board.getBox(p.x, p.y).getPiece() != null)
+					return false;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         	
-        return true;
-    	
+        }
+        	
+        return true;    	
     }
   
-    private boolean makeMove(Move move, Player player)
+    private void makeMove(Move move, Player player)
     {
         
     	Piece sourcePiece = move.getStart().getPiece();
-  
-        //SBAGLIATO --- I PEZZI DEVONO ESSERE MANGIATI PER CATTURA O INTERVENTO
-        Piece destPiece = move.getEnd().getPiece();
-        if (destPiece != null) {
-            destPiece.setKilled(true);
-            move.setPieceKilled(destPiece);
-            if(sourcePiece.isWhite())
+    	
+    	//
+        //DEFINIRE checkCapture e checkIntervention
+    	//
+    	
+    	 if(checkIntervention(move,player)) {
+        	if(sourcePiece.isWhite()) {
+        		P2.remainingPieces -=2;
+        		if(P2.remainingPieces == 0)
+            		status = WHITE_WINS;	
+        	}  	
+            else {
+        		P1.remainingPieces -=2;
+        		if(P2.remainingPieces == 0)
+            		status = WHITE_WINS;	
+        	}
+        }
+    	
+    	 if(checkCapture(move, player)) {
+        	if(sourcePiece.isWhite())
             	if(--P2.remainingPieces == 0)
             		status = WHITE_WINS;
             else   	
             	if(--P1.remainingPieces == 0)
             		status = BLACK_WINS;
         }
+        
+        
+      
   
         // store the move
         movesPlayed.add(move);
@@ -121,9 +154,17 @@ public class Game {
         else {
             this.whiteTurn = true;
         }
-  
-        return true;
     }
+
+	private boolean checkIntervention(Move move, Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean checkCapture(Move move, Player player) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	public Player getP1() {
 		return P1;
