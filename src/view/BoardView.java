@@ -88,14 +88,14 @@ public class BoardView extends JButton {
 		this.lightTile = Color.WHITE;
 		this.darkTile = Color.BLACK;
 		this.window = window;
-		this.game = Game.getIstance();
+		this.game = Game.getInstance();
 	}
 	
 	/**
 	 * Checks if the game is over and redraws the component graphics.
 	 */
 	public void update() {
-		this.isGameOver = Game.getIstance().getStatus() != Game.ACTIVE? true:false;
+		this.isGameOver = Game.getInstance().getStatus() != Game.ACTIVE? true:false;
 		repaint();
 	}
 	
@@ -192,8 +192,8 @@ public class BoardView extends JButton {
 		// Draw the player turn sign
 		String msg = game.isWhiteTurn()? "Player 1's turn" : "Player 2's turn";
 		int width = g.getFontMetrics().stringWidth(msg);
-		Color back = game.isWhiteTurn()? Color.BLACK : Color.WHITE;
-		Color front = game.isWhiteTurn()? Color.WHITE : Color.BLACK;
+		Color back = game.isWhiteTurn()? Color.WHITE : Color.BLACK;
+		Color front = game.isWhiteTurn()? Color.BLACK : Color.WHITE;
 		g.setColor(back);
 		g.fillRect(W / 2 - width / 2 - 5, OFFSET_Y + 8 * BOX_SIZE + 2,
 				width + 10, 15);
@@ -269,24 +269,26 @@ public class BoardView extends JButton {
 		//DEVO ANCORA CAPIRE BENE COSA FARE QUI, AGGIUSTARE PRIMA LE COSE IN GAME
 		//
 		// Determine if a move should be attempted
-		if (Board.isValidPoint(sel) && Board.isValidPoint(selected)) {
-			boolean change = copy.isP1Turn();
-			String expected = copy.getGameState();
-			boolean move = copy.move(selected, sel);
-			boolean updated = (move?
-					setGameState(true, copy.getGameState(), expected) : false);
-			if (updated) {
-				updateNetwork();
+		try {
+			if (Board.isValidPoint(sel) && Board.isValidPoint(selected)) {
+				boolean change = game.isWhiteTurn();
+				game.playerMove(change? game.getP1():game.getP2(), selected.x, selected.y, sel.x, sel.y);
+				
+				change = (game.isWhiteTurn() != change);
+				this.selected = change? null : sel;
+				// Check if the selection is valid
+				if(!change)
+					this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
+			} else {
+				this.selected = sel;
+				this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
 			}
-			change = (copy.isP1Turn() != change);
-			this.selected = change? null : sel;
-		} else {
-			this.selected = sel;
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		// Check if the selection is valid
-		this.selectionValid = isValidSelection(
-				copy.getBoard(), copy.isP1Turn(), selected);
 		
 		update();
 	}

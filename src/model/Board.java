@@ -7,6 +7,7 @@ public class Board {
   
     public Board()
     {
+    	
         this.resetBoard();
     }
   
@@ -22,23 +23,26 @@ public class Board {
   
     public void resetBoard()
     {
+    	Spot[][] boxes = new Spot[8][8];
     	for(int i = 0; i < 8; i++) {
         	for(int j = 0; j < 8; j++) {
         		
         		//black pieces
         		if(i == 0 || i == 2)
-        			boxes[i][j] = new Spot(i, j, new Piece(false));
+        			boxes[j][i] = new Spot(j, i, new Piece(false));
         		
         		//white pieces
         		else if(i == 7 || i == 5)
-        			boxes[i][j] = new Spot(i, j, new Piece(true));
+        			boxes[j][i] = new Spot(j, i, new Piece(true));
         		
         		//blank
         		else
-        			boxes[i][j] = new Spot(i, j, null);
+        			boxes[j][i] = new Spot(j, i, null);
         		
         	}
         }
+    	this.boxes = boxes;
+    	System.out.println(toString());
         
     }
     
@@ -56,5 +60,25 @@ public class Board {
 			
 			
 			return true;
-		}
+	}
+	
+	@Override
+	public String toString() {
+		String s=null;
+		
+		for(int i = 0; i < 8; i++) {
+        	for(int j = 0; j < 8; j++) {
+        		if(boxes[j][i].getPiece() == null)
+        			s+="0";
+        		else if(boxes[j][i].getPiece().isWhite())
+        			s+="1";
+        		else
+        			s+="2";
+        		
+        	}
+        	s+="\n";
+        }
+		
+		return s;
+	}
 }

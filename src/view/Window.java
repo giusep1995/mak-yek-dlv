@@ -25,7 +25,7 @@ public class Window extends JFrame {
 	public static final int DEFAULT_HEIGHT = 600;
 	
 	/** The default title for the checkers window. */
-	public static final String DEFAULT_TITLE = "Java Checkers";
+	public static final String DEFAULT_TITLE = "Mak-Yek";
 	
 	/** The checker board component playing the updatable game. */
 	private BoardView board;

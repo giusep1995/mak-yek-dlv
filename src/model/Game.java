@@ -20,7 +20,10 @@ public class Game {
     private Game(Player p1, Player p2)
     {
         P1 = p1;
-        P2 = p2;      
+        P2 = p2;
+        board = new Board();
+        movesPlayed = new ArrayList<Move>();
+        reset();
     }
     
     public static Game  getInstance() {
@@ -31,7 +34,7 @@ public class Game {
     }
     
     public void reset() {
-    	board = new Board();
+    	board.resetBoard();
         whiteTurn = true;     
         movesPlayed.clear();
     }
@@ -162,9 +165,164 @@ public class Game {
 	}
 
 	private boolean checkCapture(Move move, Player player) {
-		// TODO Auto-generated method stub
+		try {
+			int x = move.getEnd().getX();
+			int y = move.getEnd().getY();
+			// CASI SPECIALI
+			
+			//X=0, Y=0; X=1, Y=0; X=1, Y=1; X=0, Y=1
+			if((x == 0 || x == 1) && (y == 0 || y == 1)) {
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+			}
+			
+			//X=7 Y=7 etc ...
+			if((x == 7 || x == 6) && (y == 7 || y == 6)) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+			}
+			
+			//X=7 Y=0 etc ...
+			if((x == 7 || x == 6) && (y == 0 || y == 1)) {
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+			}
+			
+			//X=0 Y=7 etc ...
+			if((x == 0 || x == 1) && (y == 6 || y == 7)) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x+1, y), player) && !isOpponent(board.getBox(x+2, y), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+			}
+			
+			//BORDO SUPERIORE
+			if((x == 0 || x == 1) && (y>=2 && y<=5) ) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x+1, y), player) && !isOpponent(board.getBox(x+2, y), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+			}
+			
+			//BORDO INFERIORE
+			if((x == 7 || x == 6) && (y>=2 && y<=5) ) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+			}
+			
+			//LATO DX
+			if((y == 7 || y == 6) && (x>=2 && x<=5) ) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x+1, y), player) && !isOpponent(board.getBox(x+2, y), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+			}
+			
+			//LATO SX
+			if((y == 0 || y == 1) && (x>=2 && x<=5) ) {
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x+1, y), player) && !isOpponent(board.getBox(x+2, y), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+			}
+			//CENTRO
+			else{
+				if(isOccupied(board.getBox(x, y+1)) && isOccupied(board.getBox(x, y+2)) && isOpponent(board.getBox(x, y+1), player) && !isOpponent(board.getBox(x, y+2), player)) {
+					capturePiece(board.getBox(x, y+1));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x-2, y)) && isOpponent(board.getBox(x-1, y), player) && !isOpponent(board.getBox(x-2, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x+1, y)) && isOccupied(board.getBox(x+2, y)) && isOpponent(board.getBox(x+1, y), player) && !isOpponent(board.getBox(x+2, y), player)) {
+					capturePiece(board.getBox(x+1, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y-2)) && isOpponent(board.getBox(x, y-1), player) && !isOpponent(board.getBox(x, y-2), player)) {
+					capturePiece(board.getBox(x, y-1));
+					return true;
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
 		return false;
 	}
+	
+	private boolean isOpponent(Spot s, Player player) {
+		
+		return s.getPiece().isWhite() != player.isWhiteSide();
+		
+	}
+	
+	private boolean isOccupied(Spot s) {
+		return s.getPiece() != null;
+	}
+	
+	private void capturePiece(Spot s) {
+		s.setPiece(null);
+	}
+	
 
 	public Player getP1() {
 		return P1;
