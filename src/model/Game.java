@@ -160,7 +160,46 @@ public class Game {
     }
 
 	private boolean checkIntervention(Move move, Player player) {
-		// TODO Auto-generated method stub
+		try {
+			int x = move.getEnd().getX();
+			int y = move.getEnd().getY();
+			
+			//Border cases
+			if((x == 0 || x == 7) && (y == 0 || y == 7)) {
+				return false;
+			}
+			
+			//BORDO SUPERIORE E INFERIROE
+			if((x == 0 || x == 7) && (y>=1 && y<=6) ) {
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y+1)) && isOpponent(board.getBox(x, y-1), player) && isOpponent(board.getBox(x, y+1), player)) {
+					capturePiece(board.getBox(x, y));
+					return true;
+				}
+			}
+			
+			//LATO DX E SX
+			if((y == 0 || y == 7) && (x>=1 && x<=6) ) {
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x+1, y)) && isOpponent(board.getBox(x-1, y), player) && isOpponent(board.getBox(x+1, y), player)) {
+					capturePiece(board.getBox(x, y));
+					return true;
+				}
+			}
+			
+			//CENTRO
+			else{
+				if(isOccupied(board.getBox(x, y-1)) && isOccupied(board.getBox(x, y+1)) && isOpponent(board.getBox(x, y-1), player) && isOpponent(board.getBox(x, y+1), player)) {
+					capturePiece(board.getBox(x, y));
+					return true;
+				}
+				if(isOccupied(board.getBox(x-1, y)) && isOccupied(board.getBox(x+1, y)) && isOpponent(board.getBox(x-1, y), player) && isOpponent(board.getBox(x+1, y), player)) {
+					capturePiece(board.getBox(x-1, y));
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
