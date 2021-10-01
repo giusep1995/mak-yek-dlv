@@ -2,8 +2,8 @@ package model;
 
 public class Piece {
 	  
-    private boolean killed = false;
-    private boolean white = false;
+ 
+    protected boolean white = false;
   
     public Piece(boolean white)
     {
@@ -18,16 +18,6 @@ public class Piece {
     public void setWhite(boolean white)
     {
         this.white = white;
-    }
-  
-    public boolean isKilled()
-    {
-        return this.killed;
-    }
-  
-    public void setKilled(boolean killed)
-    {
-        this.killed = killed;
     }
   
     public boolean canMove(Board board, Spot start, Spot end) {

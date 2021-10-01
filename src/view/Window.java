@@ -72,7 +72,12 @@ public class Window extends JFrame {
 	 */
 	public void restart() {
 		Game.getInstance().reset();
-		this.board.update();
+		try {
+			this.board.update();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 

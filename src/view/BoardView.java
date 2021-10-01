@@ -93,8 +93,12 @@ public class BoardView extends JButton {
 	
 	/**
 	 * Checks if the game is over and redraws the component graphics.
+	 * @throws Exception 
 	 */
-	public void update() {
+	public void update() throws Exception {
+		this.isGameOver = Game.getInstance().getStatus() != Game.ACTIVE? true:false;
+		repaint();
+		game.computerMove();
 		this.isGameOver = Game.getInstance().getStatus() != Game.ACTIVE? true:false;
 		repaint();
 	}
@@ -247,50 +251,48 @@ public class BoardView extends JButton {
 	 * 
 	 * @param x	the x-coordinate of the click on this component.
 	 * @param y	the y-coordinate of the click on this component.
+	 * @throws Exception 
 	 */
-	private void handleClick(int x, int y) {
+	private void handleClick(int x, int y) throws Exception {
 		
-		// The game is over or the current player isn't human
-		if (isGameOver) {
-			return;
-		}
-				
-		// Determine what square (if any) was selected
-		final int W = getWidth(), H = getHeight();
-		final int DIM = W < H? W : H, BOX_SIZE = (DIM - 2 * PADDING) / 8;
-		final int OFFSET_X = (W - BOX_SIZE * 8) / 2;
-		final int OFFSET_Y = (H - BOX_SIZE * 8) / 2;
-		x = (x - OFFSET_X) / BOX_SIZE;
-		y = (y - OFFSET_Y) / BOX_SIZE;
-		Point sel = new Point(x, y);
-		
-		
-		//
-		//DEVO ANCORA CAPIRE BENE COSA FARE QUI, AGGIUSTARE PRIMA LE COSE IN GAME
-		//
-		// Determine if a move should be attempted
-		try {
-			if (Board.isValidPoint(sel) && Board.isValidPoint(selected)) {
-				boolean change = game.isWhiteTurn();
-				game.playerMove(change? game.getP1():game.getP2(), selected.x, selected.y, sel.x, sel.y);
-				
-				change = (game.isWhiteTurn() != change);
-				this.selected = change? null : sel;
-				// Check if the selection is valid
-				if(!change)
-					this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
-			} else {
-				this.selected = sel;
-				this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
+		if (game.isWhiteTurn()) {
+			// The game is over or the current player isn't human
+			if (isGameOver) {
+				return;
 			}
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Determine what square (if any) was selected
+			final int W = getWidth(), H = getHeight();
+			final int DIM = W < H ? W : H, BOX_SIZE = (DIM - 2 * PADDING) / 8;
+			final int OFFSET_X = (W - BOX_SIZE * 8) / 2;
+			final int OFFSET_Y = (H - BOX_SIZE * 8) / 2;
+			x = (x - OFFSET_X) / BOX_SIZE;
+			y = (y - OFFSET_Y) / BOX_SIZE;
+			Point sel = new Point(x, y);
+			//
+			//DEVO ANCORA CAPIRE BENE COSA FARE QUI, AGGIUSTARE PRIMA LE COSE IN GAME
+			//
+			// Determine if a move should be attempted
+			try {
+				if (Board.isValidPoint(sel) && Board.isValidPoint(selected)) {
+					boolean change = game.isWhiteTurn();
+					game.playerMove(change ? game.getP1() : game.getP2(), selected.x, selected.y, sel.x, sel.y);
+
+					change = (game.isWhiteTurn() != change);
+					this.selected = change ? null : sel;
+					// Check if the selection is valid
+					if (!change)
+						this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
+				} else {
+					this.selected = sel;
+					this.selectionValid = isValidSelection(game.getBoard(), game.isWhiteTurn(), selected);
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			update();
 		}
-		
-		update();
 	}
 	
 	/**
@@ -332,7 +334,12 @@ public class BoardView extends JButton {
 			// Get the new mouse coordinates and handle the click
 			Point m = BoardView.this.getMousePosition();
 			if (m != null) {
-				handleClick(m.x, m.y);
+				try {
+					handleClick(m.x, m.y);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				}
 			}
 		}

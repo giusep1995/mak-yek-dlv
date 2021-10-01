@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private Player P1;
-    private Player P2;
+    private HumanPlayer P1;
+    private ComputerPlayer P2;
     private Board board;
     private boolean whiteTurn;
     private byte status;
@@ -17,10 +17,10 @@ public class Game {
     final public static byte WHITE_WINS = 1;
     final public static byte BLACK_WINS = 2;
   
-    private Game(Player p1, Player p2)
+    private Game()
     {
-        P1 = p1;
-        P2 = p2;
+        P1 = new HumanPlayer(true);
+        P2 = new ComputerPlayer(false);
         board = new Board();
         movesPlayed = new ArrayList<Move>();
         reset();
@@ -28,7 +28,7 @@ public class Game {
     
     public static Game  getInstance() {
     	if(instance == null) {
-    		instance = new Game(new HumanPlayer(true), new HumanPlayer(false));
+    		instance = new Game();
     	}
     	return instance;   		
     }
@@ -69,6 +69,24 @@ public class Game {
         return false;
         	
         	
+    }
+    
+    public boolean computerMove() throws Exception {
+    	
+    	if(!whiteTurn) {
+    		
+    		System.out.println(board.toString());
+    		MyPair<Integer, Point> pair = P2.evaluateNextMove(board.toString());
+	    	Spot startBox = board.getBoxByComputerId(pair.getElement0());
+	    	Spot endBox = board.getBox(pair.getElement1().x, pair.getElement1().y);
+	    	Move move = new Move(P2, startBox, endBox);
+	    	
+	    	if(checkValidMove(move, P2)){
+	        	makeMove(move, P2);
+	        	return true;
+	        }
+    	}
+        return false;   	
     }
     
     public boolean checkValidMove(Move move, Player player) {
@@ -113,10 +131,7 @@ public class Game {
     {
         
     	Piece sourcePiece = move.getStart().getPiece();
-    	
-    	//
-        //DEFINIRE checkCapture e checkIntervention
-    	//
+   
     	
     	 if(checkIntervention(move,player)) {
         	if(sourcePiece.isWhite()) {
@@ -366,17 +381,13 @@ public class Game {
 		return P1;
 	}
 
-	public void setP1(Player p1) {
-		P1 = p1;
-	}
+
 
 	public Player getP2() {
 		return P2;
 	}
 
-	public void setP2(Player p2) {
-		P2 = p2;
-	}
+
 
 	public Board getBoard() {
 		return board;
