@@ -1,8 +1,3 @@
-/* Name: CheckersWindow
- * Author: Devon McGrath
- * Description: This class is a window that is used to play a game of checkers.
- * It also contains a component to change the game options.
- */
 
 package view;
 
@@ -18,16 +13,16 @@ import model.Player;
 public class Window extends JFrame {
 
 	
-	/** The default width for the checkers window. */
+	
 	public static final int DEFAULT_WIDTH = 500;
 	
-	/** The default height for the checkers window. */
+	
 	public static final int DEFAULT_HEIGHT = 600;
 	
-	/** The default title for the checkers window. */
+	
 	public static final String DEFAULT_TITLE = "Mak-Yek";
 	
-	/** The checker board component playing the updatable game. */
+	
 	private BoardView board;
 	
 	private OptionPanel opts;

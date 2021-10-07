@@ -1,8 +1,3 @@
-/* Name: OptionPanel
- * Author: Devon McGrath
- * Description: This class is a user interface to interact with a checkers
- * game window.
- */
 
 package view;
 
@@ -16,26 +11,17 @@ import javax.swing.JPanel;
 
 
 
-
-/**
- * The {@code OptionPanel} class provides a user interface component to control
- * options for the game of checkers being played in the window.
- */
 public class OptionPanel extends JPanel {
 
 	private static final long serialVersionUID = -4763875452164030755L;
 
-	/** The checkers window to update when an option is changed. */
+	
 	private Window window;
 	
-	/** The button that when clicked, restarts the game. */
+	
 	private JButton restartBtn;
 	
-	/**
-	 * Creates a new option panel for the specified checkers window.
-	 * 
-	 * @param window	the window with the game of checkers to update.
-	 */
+	
 	public OptionPanel(Window window) {
 		super(new GridLayout(0, 1));
 		
@@ -61,10 +47,7 @@ public class OptionPanel extends JPanel {
 	}
 	
 	
-	/**
-	 * The {@code OptionListener} class responds to the components within the
-	 * option panel when they are clicked/updated.
-	 */
+	
 	private class OptionListener implements ActionListener {
 
 		@Override

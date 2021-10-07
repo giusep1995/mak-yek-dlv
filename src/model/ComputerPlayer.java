@@ -37,10 +37,10 @@ public class ComputerPlayer extends Player {
 		InputProgram encoding= new ASPInputProgram();
 		encoding.addFilesPath(encodingResource);
 		
-		//Aggiungiamo all'handler il programma logico
+		
 		handler.addProgram(encoding);
 		
-		//L'handler invoca DLV2 in modo SINCRONO dando come input il programma logico e i fatti
+		
 		Output o =  handler.startSync();
 		
 		

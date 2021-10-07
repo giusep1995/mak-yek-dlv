@@ -1,10 +1,4 @@
-/* Name: CheckerBoard
- * Author: Devon McGrath
- * Description: This class is the graphical user interface representation of
- * a checkers game. It is responsible for drawing the checker board and
- * allowing moves to be made. It does not provide a method to allow the user to
- * change settings of the game or restart it.
- */
+
 
 package view;
 
@@ -29,49 +23,41 @@ import model.Player;
 import model.Spot;
 
 
-/**
- * The {@code CheckerBoard} class is a graphical user interface component that
- * is capable of drawing any checkers game state. It also handles player turns.
- * For human players, this means interacting with and selecting tiles on the
- * checker board. For non-human players, this means using the logic implemented
- * by the specified player object itself is used.
- */
+
 public class BoardView extends JButton {
 
 	private static final long serialVersionUID = -6014690893709316364L;
 	
-	/** The amount of milliseconds before a computer player takes a move. */
+	
 	private static final int TIMER_DELAY = 1000;
 	
-	/** The number of pixels of padding between this component's border and the
-	 * actual checker board that is drawn. */
+	
+	
 	private static final int PADDING = 16;
 
-	/** The game of checkers that is being played on this component. */
+	
 	private Game game;
 	
-	/** The window containing this checker board UI component. */
+	
 	private Window window;
 	
 	
-	/** The last point that the current player selected on the checker board. */
+
 	private Point selected;
 	
-	/** The flag to determine the colour of the selected tile. If the selection
-	 * is valid, a green colour is used to highlight the tile. Otherwise, a red
-	 * colour is used. */
+
 	private boolean selectionValid;
 	
-	/** The colour of the light tiles (by default, this is white). */
+
 	private Color lightTile;
 
-	/** The colour of the dark tiles (by default, this is black). */
+	
 	private Color darkTile;
 	
-	/** A convenience flag to check if the game is over. */
+	
 	private boolean isGameOver;
 	
-	/** The timer to control how fast a computer player makes a move. */
+	
 	private Timer timer;
 	
 	
@@ -243,16 +229,7 @@ public class BoardView extends JButton {
 		this.darkTile = (darkTile == null)? Color.BLACK : darkTile;
 	}
 
-	/**
-	 * Handles a click on this component at the specified point. If the current
-	 * player is not human, this method does nothing. Otherwise, the selected
-	 * point is updated and a move is attempted if the last click and this one
-	 * both are on black tiles.
-	 * 
-	 * @param x	the x-coordinate of the click on this component.
-	 * @param y	the y-coordinate of the click on this component.
-	 * @throws Exception 
-	 */
+	
 	private void handleClick(int x, int y) throws Exception {
 		
 		if (game.isWhiteTurn()) {
@@ -268,9 +245,7 @@ public class BoardView extends JButton {
 			x = (x - OFFSET_X) / BOX_SIZE;
 			y = (y - OFFSET_Y) / BOX_SIZE;
 			Point sel = new Point(x, y);
-			//
-			//DEVO ANCORA CAPIRE BENE COSA FARE QUI, AGGIUSTARE PRIMA LE COSE IN GAME
-			//
+		
 			// Determine if a move should be attempted
 			try {
 				if (Board.isValidPoint(sel) && Board.isValidPoint(selected)) {
@@ -295,17 +270,7 @@ public class BoardView extends JButton {
 		}
 	}
 	
-	/**
-	 * Checks if a selected point is valid in the context of the current
-	 * player's turn.
-	 * 
-	 * @param b			the current board.
-	 * @param isP1Turn	the flag indicating if it is player 1's turn.
-	 * @param selected	the point to test.
-	 * @return true if and only if the selected point is a checker that would
-	 * be allowed to make a move in the current turn.
-	 * @throws Exception 
-	 */
+
 	private boolean isValidSelection(Board b, boolean isP1Turn, Point selected) throws Exception {
 
 		// Trivial cases
@@ -321,11 +286,6 @@ public class BoardView extends JButton {
 		return true;
 	}
 
-	/**
-	 * The {@code ClickListener} class is responsible for responding to click
-	 * events on the checker board component. It uses the coordinates of the
-	 * mouse relative to the location of the checker board component.
-	 */
 	private class ClickListener implements ActionListener {
 
 		@Override
