@@ -32,17 +32,21 @@ occupied(X,Y):- spot(X,Y), not free(X,Y).
 :~ notMove(P,X,Y), enemy(X,Y+1), enemy(X,Y-1), computer(P,CX,Y), CX<X, #count{QX:occupied(QX,Y),QX>CX, QX<=X}=0. [1@2, P,X,Y]
 
 %Capture
-:~ notMove(P,X,Y), enemy(X-1,Y), computer(P2,X-2,Y), computer(P,X,CY), CY<Y, #count{QY:occupied(X,QY),QY>CY, QY<=Y}=0. [1@1, P,X,Y]
-:~ notMove(P,X,Y), enemy(X-1,Y), computer(P2,X-2,Y), computer(P,X,CY), CY>Y, #count{QY:occupied(X,QY),QY<CY, QY>=Y}=0. [1@1, P,X,Y]
+%%Controlla a sinistra
+:~ notMove(P,X,Y), enemy(X-1,Y), computer(P2,X-2,Y), computer(P,X,CY), CY<Y, P<>P2, #count{QY:occupied(X,QY),QY>CY, QY<=Y}=0. [1@1, P,X,Y]
+:~ notMove(P,X,Y), enemy(X-1,Y), computer(P2,X-2,Y), computer(P,X,CY), CY>Y, P<>P2, #count{QY:occupied(X,QY),QY<CY, QY>=Y}=0. [1@1, P,X,Y]
 
-:~ notMove(P,X,Y), enemy(X+1,Y), computer(P2, X+2,Y), computer(P,X,CY), CY>Y, #count{QY:occupied(X,QY),QY<CY, QY>=Y}=0. [1@1, P,X,Y]
-:~ notMove(P,X,Y), enemy(X+1,Y), computer(P2, X+2,Y), computer(P,X,CY), CY<Y, #count{QY:occupied(X,QY),QY>CY, QY<=Y}=0. [1@1, P,X,Y]
+%%Controlla a destra
+:~ notMove(P,X,Y), enemy(X+1,Y), computer(P2, X+2,Y), computer(P,X,CY), CY>Y, P<>P2,#count{QY:occupied(X,QY),QY<CY, QY>=Y}=0. [1@1, P,X,Y]
+:~ notMove(P,X,Y), enemy(X+1,Y), computer(P2, X+2,Y), computer(P,X,CY), CY<Y, P<>P2, #count{QY:occupied(X,QY),QY>CY, QY<=Y}=0. [1@1, P,X,Y]
 
-:~ notMove(P,X,Y), enemy(X,Y-1), computer(P2, X,Y-2), computer(P,CX,Y), CX>X, #count{QX:occupied(QX,Y),QX<CX, QX>=X}=0. [1@1, P,X,Y]
-:~ notMove(P,X,Y), enemy(X,Y-1), computer(P2, X,Y-2), computer(P,CX,Y), CX<X, #count{QX:occupied(QX,Y),QX>CX, QX<=X}=0. [1@1, P,X,Y]
+%%Controlla sopra
+:~ notMove(P,X,Y), enemy(X,Y-1), computer(P2, X,Y-2), computer(P,CX,Y), CX>X, P<>P2, #count{QX:occupied(QX,Y),QX<CX, QX>=X}=0. [1@1, P,X,Y]
+:~ notMove(P,X,Y), enemy(X,Y-1), computer(P2, X,Y-2), computer(P,CX,Y), CX<X, P<>P2, #count{QX:occupied(QX,Y),QX>CX, QX<=X}=0. [1@1, P,X,Y]
 
-:~ notMove(P,X,Y), enemy(X,Y+1), computer(P2, X,Y+2), computer(P,CX,Y), CX<X, #count{QX:occupied(QX,Y),QX>CX, QX<=X}=0. [1@1, P,X,Y]
-:~ notMove(P,X,Y), enemy(X,Y+1), computer(P2, X,Y+2), computer(P,CX,Y), CX>X, #count{QX:occupied(QX,Y),QX<CX, QX>=X}=0. [1@1, P,X,Y]
+%%Controlla sotto
+:~ notMove(P,X,Y), enemy(X,Y+1), computer(P2, X,Y+2), computer(P,CX,Y), CX<X,  P<>P2, #count{QX:occupied(QX,Y),QX>CX, QX<=X}=0. [1@1, P,X,Y]
+:~ notMove(P,X,Y), enemy(X,Y+1), computer(P2, X,Y+2), computer(P,CX,Y), CX>X, P<>P2, #count{QX:occupied(QX,Y),QX<CX, QX>=X}=0. [1@1, P,X,Y]
 
 %Evita di favorire un Intervento
 %%Sotto

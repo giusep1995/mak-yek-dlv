@@ -77,10 +77,7 @@ public class BoardView extends JButton {
 		this.game = Game.getInstance();
 	}
 	
-	/**
-	 * Checks if the game is over and redraws the component graphics.
-	 * @throws Exception 
-	 */
+
 	public void update() throws Exception {
 		this.isGameOver = Game.getInstance().getStatus() != Game.ACTIVE? true:false;
 		repaint();
@@ -89,10 +86,7 @@ public class BoardView extends JButton {
 		repaint();
 	}
 	
-	
-	/**
-	 * Draws the current checkers game state.
-	 */
+
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
