@@ -227,7 +227,7 @@ public class BoardView extends JButton {
 	private void handleClick(int x, int y) throws Exception {
 		
 		if (game.isWhiteTurn()) {
-			// The game is over or the current player isn't human
+		
 			if (isGameOver) {
 				return;
 			}
