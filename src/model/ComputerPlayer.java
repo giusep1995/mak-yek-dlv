@@ -54,6 +54,8 @@ public class ComputerPlayer extends Player {
 		int id, endX, endY;
 		MyPair<Integer, Point> move = null;
 		
+		System.out.println(answer);
+		
 		if(m.find()) {
 			System.out.println("move("+m.group(1)+","+m.group(2)+","+m.group(3)+")");
 			id = Integer.valueOf(m.group(1));
@@ -61,6 +63,21 @@ public class ComputerPlayer extends Player {
 			endY = Integer.valueOf(m.group(3));	
 			
 			move = new MyPair<Integer, Point>(id, new Point(endX, endY));
+		}
+		else {
+			 p = Pattern.compile(".*\\{.*move\\((\\d+),(\\d),(\\d)\\),.+}");
+			 m = p.matcher(answer);
+			
+			
+			if(m.find()) {
+				System.out.println("move("+m.group(1)+","+m.group(2)+","+m.group(3)+")");
+				id = Integer.valueOf(m.group(1));
+				endX = Integer.valueOf(m.group(2));
+				endY = Integer.valueOf(m.group(3));	
+				
+				move = new MyPair<Integer, Point>(id, new Point(endX, endY));
+			}
+			
 		}
 		handler.removeAll();
 		return move;
